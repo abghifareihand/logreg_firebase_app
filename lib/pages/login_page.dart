@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:logreg_firebase_app/pages/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:logreg_firebase_app/pages/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -47,8 +47,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
           children: <Widget>[
             TextField(
               controller: _emailController,
@@ -69,6 +68,7 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: _loginUser,
               child: const Text('Login'),
             ),
+            const SizedBox(height: 40.0),
             GestureDetector(
               onTap: () {
                 Navigator.pushNamed(context, '/register');
@@ -76,9 +76,11 @@ class _LoginPageState extends State<LoginPage> {
               child: const Text(
                 'Belum memiliki akun? Register sekarang',
                 style: TextStyle(
+                  fontWeight: FontWeight.bold,
                   color: Colors.blue,
                   decoration: TextDecoration.underline,
                 ),
+                textAlign: TextAlign.center,
               ),
             ),
           ],

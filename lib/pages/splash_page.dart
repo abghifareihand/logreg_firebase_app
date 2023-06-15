@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:logreg_firebase_app/pages/home_page.dart';
+import 'package:logreg_firebase_app/pages/bottomnav.dart';
 import 'package:logreg_firebase_app/pages/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
         if (isLoggedIn) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const HomePage()),
+            MaterialPageRoute(builder: (context) => const BottomNavBar()),
           );
         } else {
           Navigator.pushReplacement(

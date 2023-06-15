@@ -43,6 +43,7 @@ dependencies:
   firebase_storage: ^11.2.3
   shared_preferences: ^2.0.13
   fluttertoast: ^8.2.2
+  google_fonts: ^4.0.4
 
 dev_dependencies:
   flutter_test:
