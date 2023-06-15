@@ -14,19 +14,30 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage> {
   final User? user = FirebaseAuth.instance.currentUser;
+  final _isLoading = ValueNotifier<bool>(false);
 
-  Future<void> _logoutUser(BuildContext context) async {
+  Future<void> _logoutUser() async {
+    _isLoading.value = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', false);
 
     await FirebaseAuth.instance.signOut();
 
-    if (mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginPage()),
-      );
-    }
+    await Future.delayed(const Duration(seconds: 2));
+    if (!mounted) return;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LoginPage(),
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        backgroundColor: Colors.red,
+        content: Text('Berhasil Logout'),
+      ),
+    );
+    _isLoading.value = false;
   }
 
   @override
@@ -148,13 +159,46 @@ class _AccountPageState extends State<AccountPage> {
                 const SizedBox(
                   height: 40,
                 ),
-                SizedBox(
-                  height: 40,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    child: const Text('Logout'),
-                    onPressed: () => _logoutUser(context),
-                  ),
+                ValueListenableBuilder<bool>(
+                  valueListenable: _isLoading,
+                  builder: (context, value, child) {
+                    return SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _logoutUser,
+                        child: _isLoading.value
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      color: whiteColor,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Loading...',
+                                    style: whiteTextStyle.copyWith(
+                                      fontWeight: semiBold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Text(
+                                'Logout',
+                                style: whiteTextStyle.copyWith(
+                                  fontWeight: semiBold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
