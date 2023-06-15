@@ -44,12 +44,14 @@ class _RegisterPageState extends State<RegisterPage> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isLoggedIn', true);
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomePage(),
-        ),
-      );
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomePage(),
+          ),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       Fluttertoast.showToast(
           msg: e.message.toString(), gravity: ToastGravity.TOP);
@@ -103,8 +105,8 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             const SizedBox(height: 20.0),
             ElevatedButton(
-              child: const Text('Register'),
               onPressed: _registerUser,
+              child: const Text('Register'),
             ),
           ],
         ),
